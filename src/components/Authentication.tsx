@@ -2,17 +2,9 @@ import firebase from "firebase/compat/app";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 import React, { useContext, useEffect, useState } from "react";
+import { firebaseConfig } from "../../config.js";
 
 // FIREBASE
-const firebaseConfig = {
-  apiKey: "AIzaSyB1wUl4ZcZ952raQlVfDkai8rABctx00VA",
-  authDomain: "resonant-rock-376300.firebaseapp.com",
-  projectId: "resonant-rock-376300",
-  storageBucket: "resonant-rock-376300.appspot.com",
-  messagingSenderId: "504674438089",
-  appId: "1:504674438089:web:a4bf32a447a88534b4f618",
-};
-
 const app = firebase.initializeApp(firebaseConfig);
 
 var uiConfig = {
