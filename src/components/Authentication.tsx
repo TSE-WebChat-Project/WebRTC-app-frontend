@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { firebaseConfig } from "../../config.js";
 
 // FIREBASE
-const app = firebase.initializeApp(firebaseConfig);
+export const app = firebase.initializeApp(firebaseConfig);
 
 var uiConfig = {
   //   signInSuccessUrl: '<url-to-redirect-to-on-success>',
@@ -54,6 +54,7 @@ export function signOut() {
 interface IAuthenticationContext {
   loggedIn: boolean;
   username?: string;
+  uuid: string;
   overlay_id: string;
 }
 export const AuthenticationContext =
@@ -69,11 +70,13 @@ export const AuthenticationProvider: React.FC<AuthenticationProviderProps> = (
 ) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [UUID, setUUID] = useState("");
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       setLoggedIn(true);
       setUsername(user.displayName ?? "");
+      setUUID(user.uid);
       hideAuthOverlay();
     } else {
       setLoggedIn(false);
@@ -104,6 +107,7 @@ export const AuthenticationProvider: React.FC<AuthenticationProviderProps> = (
         value={{
           loggedIn: loggedIn,
           username: username,
+          uuid: UUID,
           overlay_id: "firebaseui-auth-container",
         }}
       >
