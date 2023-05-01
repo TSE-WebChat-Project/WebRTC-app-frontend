@@ -18,12 +18,27 @@ const wrtcConfig = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 /** WebRTC connection options. Allows adding video and audio streams after init */
 const wrtcOptions = { offerToReceiveAudio: true, offerToReceiveVideo: true };
 let conn: RTCPeerConnection;
+let localWebcam: MediaStream;
+
+const constraints = {
+  'video': true,
+  'audio': true
+}
+navigator.mediaDevices.getUserMedia(constraints)
+  .then(stream => {
+      console.log('Got MediaStream:', stream);
+      localWebcam = stream
+  })
+  .catch(error => {
+      console.error('Error accessing media devices.', error);
+  });
 
 export async function join(
     meeting_id: string | null,
     uuid: string | undefined,
     setPeer: any
   ) {
+
     let ref = collection(
       db,
       `meetings/${meeting_id ?? "management-node-deployer-1"}/clients`
@@ -50,6 +65,11 @@ async function createRtcConnection(
     uuid: string | undefined
   ) {
     conn = new RTCPeerConnection(wrtcConfig);
+    
+    localWebcam.getTracks().forEach(track => {
+      conn.addTrack(track, localWebcam);
+    });
+
     conn.onconnectionstatechange = (ev) => {
         console.log(ev);
     }
