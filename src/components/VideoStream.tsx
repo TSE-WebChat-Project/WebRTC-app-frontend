@@ -10,12 +10,13 @@ export const VideoStream: React.FC<VideoStreamProps> = (props) => {
     let video = document.getElementById(props.id);
     if (video) {
       (video as HTMLVideoElement).srcObject = props.stream;
+      (video as HTMLVideoElement).play();
     }
   });
 
   return (
     <>
-      <video id={props.id}></video>
+      <video id={props.id} itemID={props.id}></video>
     </>
   );
 };

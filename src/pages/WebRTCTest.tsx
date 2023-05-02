@@ -4,6 +4,7 @@ import {
   EnforceAuthentication,
 } from "../components/Authentication";
 import WebRTC from "../components/WebRTC";
+import { WebRTCProvider } from "../components/WebRTCProvider";
 
 export default function WebRTCTest() {
   return (
@@ -13,7 +14,9 @@ export default function WebRTCTest() {
         allowExitLoginOverlay={false}
       >
         <EnforceAuthentication />
-        <WebRTC></WebRTC>
+        <WebRTCProvider>
+          <WebRTC />
+        </WebRTCProvider>
       </AuthenticationProvider>
     </>
   );
